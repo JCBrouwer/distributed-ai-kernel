@@ -23,8 +23,10 @@ public class Key implements Comparable<Key> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Key)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof Key))
+            return false;
         Key key = (Key) o;
         return x.equals(key.x) && y.equals(key.y);
     }
@@ -36,10 +38,7 @@ public class Key implements Comparable<Key> {
 
     @Override
     public String toString() {
-        return "Key{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "Key{" + "x=" + x + ", y=" + y + '}';
     }
 
     @Override

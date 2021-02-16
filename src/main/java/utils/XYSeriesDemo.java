@@ -11,32 +11,20 @@ import org.jfree.ui.RefineryUtilities;
 
 import java.util.ArrayList;
 
-
 public class XYSeriesDemo extends ApplicationFrame {
-
-
 
     /**
      * A demonstration application showing an XY series containing a null value.
      *
-     * @param title  the frame title.
+     * @param title the frame title.
      */
-    public XYSeriesDemo(final String title , XYSeries series) {
+    public XYSeriesDemo(final String title, XYSeries series) {
 
         super(title);
 
-
         final XYSeriesCollection data = new XYSeriesCollection(series);
-        final JFreeChart chart = ChartFactory.createXYLineChart(
-                "Demo",
-                "Number of cycles",
-                "relative error to best-fit line",
-                data,
-                PlotOrientation.VERTICAL,
-                true,
-                true,
-                false
-        );
+        final JFreeChart chart = ChartFactory.createXYLineChart("Demo", "Number of cycles",
+                "relative error to best-fit line", data, PlotOrientation.VERTICAL, true, true, false);
 
         final ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new java.awt.Dimension(500, 270));

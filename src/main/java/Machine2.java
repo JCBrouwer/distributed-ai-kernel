@@ -6,7 +6,9 @@ public class Machine2 {
 
     static double alpha = 0.05;
 
-    public HashMap<Key, Float> getModel3() { return model3;}
+    public HashMap<Key, Float> getModel3() {
+        return model3;
+    }
 
     private HashMap<Key, Float> model3;
 
@@ -14,19 +16,18 @@ public class Machine2 {
 
     private ArrayList<String> listOfSongIds;
 
-    //private int totalNrOfSongs;
-
+    // private int totalNrOfSongs;
 
     public HashMap<String, Boolean> getCurrUser() {
         return currUser;
     }
 
-
     /**
      * Constructor, initializes the machine.
-     * @param size - size of model (how many total songs)
-     * @param initValue - TBD probably 0.5 or random distribution
-     * @param userRow - user's history of liked songs
+     * 
+     * @param size         - size of model (how many total songs)
+     * @param initValue    - TBD probably 0.5 or random distribution
+     * @param userRow      - user's history of liked songs
      * @param songListSize
      */
     @SuppressWarnings("all")
@@ -37,25 +38,25 @@ public class Machine2 {
 
         this.currUser = new HashMap<>();
 
-        for(String s: userRow){
+        for (String s : userRow) {
             currUser.put(s, true);
         }
-        for(String s2: listOfSongIds){
-            if(!(currUser.containsKey(s2))){
+        for (String s2 : listOfSongIds) {
+            if (!(currUser.containsKey(s2))) {
                 currUser.put(s2, false);
             }
         }
 
-        //this.currUser = userRow;
+        // this.currUser = userRow;
 
         int size1 = listOfSongIds.size();
-        for(int i=0; i<size1; i++){
-            //if(userRow[i]){
-            for(int j=i+1; j<size1; j++){
+        for (int i = 0; i < size1; i++) {
+            // if(userRow[i]){
+            for (int j = i + 1; j < size1; j++) {
 
-                //create row only if current user has listened to this song
+                // create row only if current user has listened to this song
 
-                //so user listens to song 1, 5
+                // so user listens to song 1, 5
                 // matrix will be
 
                 // s1 0.5 0.5 ... 0.5
@@ -64,25 +65,21 @@ public class Machine2 {
                 model3.put(new Key(listOfSongIds.get(i), listOfSongIds.get(j)), initValue);
 
             }
-        //}
+            // }
+        }
     }
-    }
 
+    private void updateMachine(Machine2 t) {
 
-
-    private void updateMachine(Machine2 t){
-
-        //int nrOfSongsListenedTo = t.currUser.length;
+        // int nrOfSongsListenedTo = t.currUser.length;
 
         int size1 = listOfSongIds.size();
-        for(int i=0; i<size1; i++){
-            //if(userRow[i]){
-            for(int j=i+1; j<size1; j++){
-        //for(int i=0; i< nrOfSongsListenedTo; i++) {
-            //if (song1) {
-                //for (int j = i; j < t.totalNrOfSongs; j++) {
-
-
+        for (int i = 0; i < size1; i++) {
+            // if(userRow[i]){
+            for (int j = i + 1; j < size1; j++) {
+                // for(int i=0; i< nrOfSongsListenedTo; i++) {
+                // if (song1) {
+                // for (int j = i; j < t.totalNrOfSongs; j++) {
 
                 String song1 = listOfSongIds.get(i);
                 String song2 = listOfSongIds.get(j);
@@ -90,51 +87,41 @@ public class Machine2 {
                 boolean hasSong1 = currUser.get(song1);
                 boolean hasSong2 = currUser.get(song2);
 
+                // don't add anything for false false occurrences
+                // they are too frequent and probably not relevant
 
-                    //don't add anything for false false occurrences
-                    //they are too frequent and probably not relevant
+                // if song1 == song2 == true && hasSong1 means we don't increase for false false
 
+                if ((hasSong2 == hasSong1) && hasSong1) {
 
-                    //if song1 == song2 == true  && hasSong1 means we don't increase for false false
+                    float initVal = t.model3.get(new Key(song1, song2));
 
-                    if ((hasSong2 == hasSong1) && hasSong1) {
+                    float finalVal = initVal + (1 - initVal) * 0.05f;
 
+                    t.model3.replace(new Key(song1, song2), finalVal);
 
-                            float initVal = t.model3.get(new Key(song1, song2));
+                    // t.model[i][j] += (1 - t.model[i][j]) * 0.05f;
 
-                            float finalVal = initVal + (1 - initVal) * 0.05f;
+                } else if (hasSong1 != hasSong2) {
 
-                            t.model3.replace(new Key(song1, song2), finalVal);
+                    float initVal = t.model3.get(new Key(song1, song2));
 
-                            //t.model[i][j] += (1 - t.model[i][j]) * 0.05f;
+                    float finalVal = initVal - initVal * 0.05f;
 
-                    } else if(hasSong1 != hasSong2) {
+                    t.model3.replace(new Key(song1, song2), finalVal);
 
-                        float initVal = t.model3.get(new Key(song1,song2));
-
-                        float finalVal = initVal - initVal * 0.05f;
-
-                        t.model3.replace(new Key(song1, song2), finalVal);
-
-                        //t.model[i][j] -= t.model[i][j]* 0.05f;
-                    }
-
+                    // t.model[i][j] -= t.model[i][j]* 0.05f;
                 }
+
             }
         }
-
-
-
-
-    public void mergeModels(Machine2 other, int val){
-
-
-        other.getModel3().forEach(
-                (key, value) -> this.getModel3().merge( key, value, (v1, v2) -> (v1+ v2)/val)
-        );
-
     }
 
+    public void mergeModels(Machine2 other, int val) {
+
+        other.getModel3().forEach((key, value) -> this.getModel3().merge(key, value, (v1, v2) -> (v1 + v2) / val));
+
+    }
 
     public void updateUM(Machine2 other) {
 
@@ -142,9 +129,7 @@ public class Machine2 {
         updateMachine(other);
         this.mergeModels(other, 2);
 
-
     }
-
 
     @Override
     public String toString() {

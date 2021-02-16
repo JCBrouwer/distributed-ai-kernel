@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-
 class MachineTest {
 
     Machine machine1;
@@ -8,21 +7,20 @@ class MachineTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        machine1 = new Machine(1,1);
-        machine2 = new Machine(3,4);
+        machine1 = new Machine(1, 1);
+        machine2 = new Machine(3, 4);
     }
-
 
     @org.junit.jupiter.api.Test
     void updateMU() {
         machine2.updateMU(machine1);
-        //should assert that the distance from the new line to the point is lower I guess ?
+        // should assert that the distance from the new line to the point is lower I
+        // guess ?
     }
 
     @org.junit.jupiter.api.Test
     void updateUM() {
     }
-
 
     @org.junit.jupiter.api.Test
     void getIntercept() {
