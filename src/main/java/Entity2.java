@@ -1,6 +1,4 @@
 import org.jfree.data.xy.XYSeries;
-import org.ujmp.core.Matrix;
-import org.ujmp.core.SparseMatrix;
 import utils.Key;
 import utils.LinearRegression;
 
